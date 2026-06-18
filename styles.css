@@ -1,0 +1,599 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --bg: #eee8db;
+  --card: #fffcf5;
+  --ink: #1a1816;
+  --muted: #7a746b;
+  --line: rgba(26, 24, 22, 0.14);
+  --accent: #e63312;
+  --accent-glow: #ff5533;
+  --blue: #1260a0;
+  --warm: #f5c832;
+  --teal: #0d9488;
+  --violet: #7c3aed;
+  --perf-size: 12px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Body & Background ─────────────────────── */
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Animated soft gradient orbs */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+  animation: orbFloat 12s ease-in-out infinite alternate;
+}
+
+body::before {
+  width: 420px;
+  height: 420px;
+  top: -80px;
+  left: -60px;
+  background: radial-gradient(circle, rgba(245, 200, 50, 0.5) 0%, transparent 70%);
+}
+
+body::after {
+  width: 350px;
+  height: 350px;
+  bottom: -60px;
+  right: -40px;
+  background: radial-gradient(circle, rgba(230, 51, 18, 0.35) 0%, transparent 70%);
+  animation-delay: -6s;
+}
+
+@keyframes orbFloat {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30px, -20px) scale(1.12); }
+}
+
+/* Grid dots pattern overlay */
+.page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, var(--ink) 0.8px, transparent 0.8px);
+  background-size: 24px 24px;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+}
+
+a {
+  color: inherit;
+}
+
+/* ── Page Layout ───────────────────────────── */
+
+.page {
+  position: relative;
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 36px 16px;
+  z-index: 1;
+}
+
+/* ── Main Card (Ticket) ────────────────────── */
+
+.linktree {
+  --notch-r: calc(var(--perf-size) / 2);
+  position: relative;
+  width: min(100%, 440px);
+  border: 2px solid var(--ink);
+  border-radius: 24px;
+  background: var(--card);
+  box-shadow:
+    6px 6px 0 var(--ink),
+    14px 14px 0 rgba(26, 24, 22, 0.06);
+  animation: cardIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: box-shadow 0.35s ease;
+}
+
+.linktree:hover {
+  box-shadow:
+    8px 8px 0 var(--ink),
+    18px 18px 0 rgba(26, 24, 22, 0.07);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96) rotate(-0.5deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+/* Noise texture overlay */
+.linktree > .noise {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* Perforated side notches */
+.linktree::before,
+.linktree::after {
+  content: '';
+  position: absolute;
+  width: var(--perf-size);
+  height: var(--perf-size);
+  background: var(--bg);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.linktree::before {
+  left: calc(-1 * var(--notch-r) - 1px);
+  top: calc(var(--perf-top, 42%) - var(--notch-r));
+  clip-path: inset(0 0 0 50%);
+}
+
+.linktree::after {
+  right: calc(-1 * var(--notch-r) - 1px);
+  top: calc(var(--perf-top, 42%) - var(--notch-r));
+  clip-path: inset(0 50% 0 0);
+}
+
+/* ── Ticket Header ─────────────────────────── */
+
+.ticket-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 22px 16px;
+  z-index: 1;
+}
+
+.tag {
+  padding: 6px 14px;
+  border: 1.5px solid var(--blue);
+  border-radius: 999px;
+  color: var(--blue);
+  background: rgba(18, 96, 160, 0.06);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+  animation: fadeSlide 0.5s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.avatar {
+  position: relative;
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  border: 2.5px solid var(--ink);
+  border-radius: 16px;
+  color: var(--ink);
+  background: linear-gradient(135deg, var(--warm) 0%, #f0a828 100%);
+  font-family: 'Space Mono', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  transform: rotate(-5deg);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+  z-index: 1;
+  animation: fadeSlide 0.5s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Diagonal stripe pattern on avatar */
+.avatar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(255, 255, 255, 0.2) 4px,
+    rgba(255, 255, 255, 0.2) 6px
+  );
+  border-radius: inherit;
+}
+
+.avatar:hover {
+  transform: rotate(3deg) scale(1.08);
+}
+
+/* ── Intro Section ─────────────────────────── */
+
+.intro {
+  position: relative;
+  padding: 20px 22px 22px;
+  border-top: 2px dashed var(--line);
+  z-index: 1;
+}
+
+h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  animation: fadeSlide 0.5s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.bio {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  animation: fadeSlide 0.5s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Stamp decoration ──────────────────────── */
+
+.stamp {
+  position: absolute;
+  right: 18px;
+  top: 16px;
+  width: 52px;
+  height: 52px;
+  border: 2.5px solid var(--accent);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transform: rotate(14deg);
+  opacity: 0.14;
+  pointer-events: none;
+  animation: stampIn 0.6s 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.stamp::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1.5px dashed var(--accent);
+  border-radius: 50%;
+}
+
+@keyframes stampIn {
+  from {
+    opacity: 0;
+    transform: rotate(14deg) scale(0.5);
+  }
+  to {
+    opacity: 0.14;
+    transform: rotate(14deg) scale(1);
+  }
+}
+
+/* ── Perforation separator ─────────────────── */
+
+.perf-line {
+  position: relative;
+  height: 0;
+  margin: 0 22px;
+  border: none;
+  border-top: 2px dashed var(--line);
+  z-index: 1;
+}
+
+/* ── Links ─────────────────────────────────── */
+
+.links {
+  display: grid;
+  gap: 10px;
+  padding: 18px 22px 10px;
+  z-index: 1;
+  position: relative;
+}
+
+.link-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 58px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--ink);
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--ink);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  overflow: hidden;
+  transition:
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 180ms ease,
+    box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 180ms ease;
+  animation: linkIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes linkIn {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Color accent stripe on left */
+.link-button::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--link-accent, var(--blue));
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.link-button:hover::before,
+.link-button:focus-visible::before {
+  opacity: 1;
+}
+
+/* Per-link accent colors */
+.link-button:nth-child(1) { --link-accent: var(--blue); }
+.link-button:nth-child(2) { --link-accent: var(--teal); }
+.link-button:nth-child(3) { --link-accent: var(--warm); }
+.link-button:nth-child(4) { --link-accent: var(--violet); }
+.link-button:nth-child(5) { --link-accent: var(--accent); }
+
+.link-button:hover,
+.link-button:focus-visible {
+  box-shadow: 4px 4px 0 var(--ink);
+  transform: translate(-2px, -2px);
+  background: #fdf6e3;
+}
+
+.link-button:active {
+  transform: translate(0, 0);
+  box-shadow: none;
+  transition-duration: 60ms;
+}
+
+/* ── Primary button ────────────────────────── */
+
+.link-button.primary {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-glow) 100%);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* Shimmer sweep on primary */
+.link-button.primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  animation: shimmer 3.5s 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { left: -100%; }
+  30%  { left: 120%; }
+  100% { left: 120%; }
+}
+
+.link-button.primary::before {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.link-button.primary:hover,
+.link-button.primary:focus-visible {
+  background: linear-gradient(135deg, #cf2a0d 0%, var(--accent) 100%);
+  box-shadow: 4px 4px 0 #b02510;
+}
+
+.link-button.primary .link-number {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.link-button.primary .link-arrow {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Link inner elements ───────────────────── */
+
+.link-number {
+  display: grid;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  margin-right: 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  color: var(--link-accent, var(--blue));
+  background: rgba(18, 96, 160, 0.05);
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  transition: color 180ms ease, background 180ms ease;
+}
+
+/* Tint number badge with per-link color */
+.link-button:nth-child(2) .link-number { background: rgba(13, 148, 136, 0.07); }
+.link-button:nth-child(3) .link-number { background: rgba(245, 200, 50, 0.1); }
+.link-button:nth-child(4) .link-number { background: rgba(124, 58, 237, 0.07); }
+.link-button:nth-child(5) .link-number { background: rgba(230, 51, 18, 0.07); }
+
+.link-label {
+  flex: 1;
+  text-align: left;
+}
+
+.link-arrow {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), color 180ms ease;
+}
+
+.link-button:hover .link-arrow {
+  transform: translateX(4px);
+  color: var(--link-accent, var(--blue));
+}
+
+.link-button.primary:hover .link-arrow {
+  color: #fff;
+}
+
+/* ── Footer (serial / barcode) ─────────────── */
+
+.ticket-footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px 18px;
+  z-index: 1;
+}
+
+.serial {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+.barcode {
+  display: flex;
+  gap: 2px;
+  align-items: end;
+  height: 22px;
+  opacity: 0.09;
+}
+
+.barcode span {
+  display: block;
+  width: var(--w, 2px);
+  height: var(--h, 100%);
+  background: var(--ink);
+  border-radius: 1px;
+}
+
+/* ── Responsive ────────────────────────────── */
+
+@media (max-width: 460px) {
+  .linktree {
+    border-radius: 18px;
+    box-shadow:
+      4px 4px 0 var(--ink),
+      10px 10px 0 rgba(26, 24, 22, 0.06);
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .link-button {
+    min-height: 54px;
+    padding: 8px 12px;
+  }
+
+  .stamp {
+    width: 42px;
+    height: 42px;
+    font-size: 8px;
+  }
+
+  .ticket-head,
+  .intro,
+  .links,
+  .ticket-footer {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .perf-line {
+    margin: 0 18px;
+  }
+}
+
+/* ── Selection ─────────────────────────────── */
+
+::selection {
+  background: var(--warm);
+  color: var(--ink);
+}
+
+/* ── Focus visible ─────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* ── Reduce motion ─────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
