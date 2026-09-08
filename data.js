@@ -17,11 +17,11 @@ const micrositeData = {
     },
     {
       label: "Sirah Nabawiyah",
-      url: "https://sn.febrianyudhis.web.id/",
+      url: "https://sirah-nabawiyah.febrianyudhis.web.id/",
     },
     {
       label: "Hari-hari Stoik",
-      url: "https://ds.febrianyudhis.web.id/",
+      url: "https://daily-stoic.febrianyudhis.web.id/",
     },
   ],
 };
