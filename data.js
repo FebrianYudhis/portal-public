@@ -20,6 +20,10 @@ const micrositeData = {
       url: "https://sirah-nabawiyah.febrianyudhis.web.id/",
     },
     {
+      label: "Nutrikompas",
+      url: "https://nutrikompas.febrianyudhis.web.id/",
+    },
+    {
       label: "Hari-hari Stoik",
       url: "https://daily-stoic.febrianyudhis.web.id/",
     },
